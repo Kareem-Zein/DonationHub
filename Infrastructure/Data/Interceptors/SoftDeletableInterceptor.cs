@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Infrastructure.Data.Interseptors;
+namespace Infrastructure.Data.Interceptors;
 
 internal sealed class SoftDeletableInterceptor(TimeProvider timeProvider) : SaveChangesInterceptor
 {

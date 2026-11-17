@@ -3,7 +3,7 @@ using Application.Abstractions.Interfaces.Repositories;
 using Application.Abstractions.Interfaces.Services;
 using Application.Options;
 using Infrastructure.Data;
-using Infrastructure.Data.Interseptors;
+using Infrastructure.Data.Interceptors;
 using Infrastructure.Identity;
 using Infrastructure.Implementations;
 using Infrastructure.Implementations.Repositories;
@@ -25,7 +25,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>((sp, options) =>
         {
             options.UseSqlServer(connectionString)
-                .AddInterceptors(sp.GetRequiredService<SoftDeletableInterceptor>());
+                .AddInterceptors(sp.GetRequiredService<AuditableInterceptor>(), sp.GetRequiredService<SoftDeletableInterceptor>());
         });
 
         services.AddIdentity<ApplicationUser, IdentityRole<Guid>>(options =>
@@ -40,6 +40,7 @@ public static class DependencyInjection
         .AddEntityFrameworkStores<AppDbContext>()  
         .AddDefaultTokenProviders();
 
+        services.AddScoped<AuditableInterceptor>();
         services.AddScoped<SoftDeletableInterceptor>();
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
