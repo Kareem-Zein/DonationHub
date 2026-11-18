@@ -17,6 +17,18 @@ internal class UnitOfWork(AppDbContext appDbContext) : IUnitOfWork
 
         return result;
     }
+    
+    public async Task<Result<T>> ExecuteInTransactionAsync<T>(Func<CancellationToken, Task<Result<T>>> func, CancellationToken cancellationToken)
+    {
+        await using var transaction = await appDbContext.Database.BeginTransactionAsync(cancellationToken);
+
+        var result = await func(cancellationToken);
+
+        if (result.IsSuccess)
+            await transaction.CommitAsync(cancellationToken);
+
+        return result;
+    }
 
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         => await appDbContext.SaveChangesAsync(cancellationToken);

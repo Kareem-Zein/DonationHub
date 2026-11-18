@@ -58,25 +58,25 @@ internal class IdentityService(UserManager<ApplicationUser> userManager, TimePro
         return new ProfileQueryDto(userId, user.Email!, user.FullName, user.PreferredLanguage, roles);
     }
 
-    public async Task<Result> RegisterAsync(RegisterCommandDto dto, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> RegisterAsync(IdentityRegisterDto dto, CancellationToken cancellationToken)
     {
         var userModel = ApplicationUser.Create(dto.Email, dto.Email, dto.FullName, dto.PrefferLanguage, timeProvider.GetUtcNow());
 
         if (userModel.IsFailure)
-            return Result.Failure(userModel.Errors.ToArray());
+            return Result<Guid>.Failure(userModel.Errors.ToArray());
 
         return await unitOfWork.ExecuteInTransactionAsync(async (ct) =>
         {
             var createResult = (await userManager.CreateAsync(userModel.Value!, dto.Password)).ToResult();
 
             if (createResult.IsFailure)
-                return createResult;
+                return Result<Guid>.Failure(createResult.Errors.ToArray());
 
             ct.ThrowIfCancellationRequested();
 
             var roleResult = await userManager.AddToRoleAsync(userModel.Value!, "Donor");
 
-            return roleResult.ToResult();
+            return roleResult.ToResult(userModel.Value!.Id);
         }, cancellationToken);
     }
 }

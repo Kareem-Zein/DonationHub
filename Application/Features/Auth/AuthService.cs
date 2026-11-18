@@ -80,7 +80,4 @@ internal sealed class AuthService(
 
         return Result<RefreshCommandResultDto>.Success(new(refreshToken.Value!, jwt.AccessToken, jwt.ExpireAtUtc));
     }
-
-    public async Task<Result> RegisterAsync(RegisterCommandDto dto, CancellationToken cancellationToken)
-        => await identityService.RegisterAsync(dto, cancellationToken);
 }

@@ -13,6 +13,15 @@ namespace Infrastructure.Extensions
             return Result.Failure(
                 identityResult.Errors.Select(MapError).ToArray());
         }
+        
+        public static Result<T> ToResult<T>(this IdentityResult identityResult, T value)
+        {
+            if (identityResult.Succeeded)
+                return Result<T>.Success(value);
+
+            return Result<T>.Failure(
+                identityResult.Errors.Select(MapError).ToArray());
+        }
 
         private static Error MapError(IdentityError error) => error.Code switch
         {

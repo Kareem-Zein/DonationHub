@@ -58,11 +58,11 @@ public static class DependencyInjection
             .ValidateDataAnnotations()
             .ValidateOnStart();
         
-        services
-            .AddOptions<SeedAdminOptions>()
-            .BindConfiguration(SeedAdminOptions.SectionName)
-            .ValidateDataAnnotations()
-            .ValidateOnStart();
+        //services
+        //    .AddOptions<SeedAdminOptions>()
+        //    .BindConfiguration(SeedAdminOptions.SectionName)
+        //    .ValidateDataAnnotations()
+        //    .ValidateOnStart();
 
         return services;
     }

@@ -579,7 +579,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("CampaignId");
 
-                            b1.ToTable("Campaigns");
+                            b1.ToTable("Campaigns", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CampaignId");
@@ -601,7 +601,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("CampaignId");
 
-                            b1.ToTable("Campaigns");
+                            b1.ToTable("Campaigns", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CampaignId");
@@ -644,7 +644,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("DonationId");
 
-                            b1.ToTable("Donations");
+                            b1.ToTable("Donations", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("DonationId");
@@ -687,7 +687,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("PaymentAttemptId");
 
-                            b1.ToTable("PaymentAttempts");
+                            b1.ToTable("PaymentAttempts", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("PaymentAttemptId");
